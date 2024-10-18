@@ -93,3 +93,110 @@ CREATE TABLE Fact_Enrollment (
     FOREIGN KEY (Department_ID) REFERENCES Dim_Department(Department_ID),
     FOREIGN KEY (Date_ID) REFERENCES Dim_Date(Date_ID)
 );
+
+## ETL Pipeline
+
+The ETL process is divided into three phases: **Extract**, **Transform**, and **Load**. In this project, data is extracted into staging tables, transformed to match the dimension and fact tables, and then loaded into the final schema.
+
+### Extract
+
+Extract data from external sources (e.g., CSV files, APIs, or databases) into staging tables.
+
+```sql
+-- Example: Import student data from CSV into staging table
+LOAD DATA INFILE 'path/to/student.csv'
+INTO TABLE stg_student
+FIELDS TERMINATED BY ','
+LINES TERMINATED BY '\n'
+(Student_ID, Student_Name, Major, Enrollment_Year);
+
+### Transform
+
+Transform the raw data into a format that matches the structure of the dimension tables.
+
+--SQL CODE
+-- Transform and load data into Dim_Student table
+INSERT INTO Dim_Student (Student_ID, Student_Name, Major, Enrollment_Year)
+SELECT DISTINCT
+    Student_ID,
+    Student_Name,
+    Major,
+    Enrollment_Year
+FROM stg_student;
+
+-- Transform and load data into Dim_Course table
+INSERT INTO Dim_Course (Course_ID, Course_Name, Credits)
+SELECT DISTINCT
+    Course_ID,
+    Course_Name,
+    Credits
+FROM stg_course;
+
+-- Transform and load data into Dim_Instructor table
+INSERT INTO Dim_Instructor (Instructor_ID, Instructor_Name, Department_ID)
+SELECT DISTINCT
+    Instructor_ID,
+    Instructor_Name,
+    Department_ID
+FROM stg_instructor;
+
+-- Transform and load data into Dim_Department table
+INSERT INTO Dim_Department (Department_ID, Department_Name)
+SELECT DISTINCT
+    Department_ID,
+    Department_Name
+FROM stg_department;
+
+-- Transform and load data into Dim_Date table
+INSERT INTO Dim_Date (Date_ID, Date, Term, Year)
+SELECT DISTINCT
+    ROW_NUMBER() OVER(ORDER BY Date) AS Date_ID,
+    Date,
+    CASE
+        WHEN MONTH(Date) IN (1, 2, 3) THEN 'Spring'
+        WHEN MONTH(Date) IN (9, 10, 11) THEN 'Fall'
+        ELSE 'Other'
+    END AS Term,
+    YEAR(Date) AS Year
+FROM stg_enrollment;
+
+### Load
+
+Load the transformed data into the Fact_Enrollment table, ensuring that it links with the dimension tables.
+
+-- SQL CODE
+-- Load transformed data into Fact_Enrollment table
+INSERT INTO Fact_Enrollment (Enrollment_ID, Student_ID, Course_ID, Instructor_ID, Department_ID, Date_ID, Grade)
+SELECT
+    e.Enrollment_ID,
+    s.Student_ID,
+    c.Course_ID,
+    i.Instructor_ID,
+    i.Department_ID,
+    d.Date_ID,
+    e.Grade
+FROM stg_enrollment e
+JOIN Dim_Student s ON e.Student_ID = s.Student_ID
+JOIN Dim_Course c ON e.Course_ID = c.Course_ID
+JOIN Dim_Instructor i ON e.Instructor_ID = i.Instructor_ID
+JOIN Dim_Date d ON e.Date = d.Date;
+
+## How to Run
+
+### Prerequisites
+- MySQL Server or any SQL-compatible RDBMS.
+- Datasets in CSV format (e.g., student.csv, course.csv, instructor.csv, enrollment.csv).
+- SQL scripts or tools to run the provided SQL code.
+
+###Steps to Execute
+- Clone this repository.
+- Run the CREATE TABLE scripts provided in the Data Model section to create the database schema.
+- Load the raw data into staging tables (stg_student, stg_course, stg_instructor, stg_enrollment) using LOAD DATA INFILE.
+- Run the Transform scripts to process and load data into the dimension tables.
+- Finally, load the data into the Fact_Enrollment table using the Load script.
+
+##Contact
+For any questions or suggestions, feel free to reach out!
+
+Email: dhruvilpanchal205@gmail.com
+LinkedIn: LinkedIn Profile
