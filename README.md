@@ -93,6 +93,7 @@ CREATE TABLE Fact_Enrollment (
     FOREIGN KEY (Department_ID) REFERENCES Dim_Department(Department_ID),
     FOREIGN KEY (Date_ID) REFERENCES Dim_Date(Date_ID)
 );
+```
 
 ## ETL Pipeline
 
