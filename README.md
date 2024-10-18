@@ -94,11 +94,11 @@ CREATE TABLE Fact_Enrollment (
     FOREIGN KEY (Date_ID) REFERENCES Dim_Date(Date_ID)
 );
 
-## ETL Pipeline
+## etl-pipeline
 
 The ETL process is divided into three phases: **Extract**, **Transform**, and **Load**. In this project, data is extracted into staging tables, transformed to match the dimension and fact tables, and then loaded into the final schema.
 
-### Extract
+###extract
 
 Extract data from external sources (e.g., CSV files, APIs, or databases) into staging tables.
 
@@ -110,7 +110,7 @@ FIELDS TERMINATED BY ','
 LINES TERMINATED BY '\n'
 (Student_ID, Student_Name, Major, Enrollment_Year);
 
-### Transform
+###transform
 
 Transform the raw data into a format that matches the structure of the dimension tables.
 
@@ -160,7 +160,7 @@ SELECT DISTINCT
     YEAR(Date) AS Year
 FROM stg_enrollment;
 
-### Load
+###load
 
 Load the transformed data into the Fact_Enrollment table, ensuring that it links with the dimension tables.
 
@@ -181,7 +181,7 @@ JOIN Dim_Course c ON e.Course_ID = c.Course_ID
 JOIN Dim_Instructor i ON e.Instructor_ID = i.Instructor_ID
 JOIN Dim_Date d ON e.Date = d.Date;
 
-## How to Run
+##how-to-run
 
 ### Prerequisites
 - MySQL Server or any SQL-compatible RDBMS.
