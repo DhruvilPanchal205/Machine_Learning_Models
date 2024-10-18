@@ -203,4 +203,4 @@ JOIN Dim_Date d ON e.Date = d.Date;
 For any questions or suggestions, feel free to reach out!
 
 Email: dhruvilpanchal205@gmail.com
-LinkedIn: LinkedIn Profile
+LinkedIn: [LinkedIn Profile](https://www.linkedin.com/in/dhruvilpanchal/)
