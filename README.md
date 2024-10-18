@@ -110,8 +110,9 @@ INTO TABLE stg_student
 FIELDS TERMINATED BY ','
 LINES TERMINATED BY '\n'
 (Student_ID, Student_Name, Major, Enrollment_Year);
+```
 
-###transform
+### Transform
 
 Transform the raw data into a format that matches the structure of the dimension tables.
 
@@ -160,8 +161,9 @@ SELECT DISTINCT
     END AS Term,
     YEAR(Date) AS Year
 FROM stg_enrollment;
+```
 
-###load
+### Load
 
 Load the transformed data into the Fact_Enrollment table, ensuring that it links with the dimension tables.
 
@@ -181,8 +183,9 @@ JOIN Dim_Student s ON e.Student_ID = s.Student_ID
 JOIN Dim_Course c ON e.Course_ID = c.Course_ID
 JOIN Dim_Instructor i ON e.Instructor_ID = i.Instructor_ID
 JOIN Dim_Date d ON e.Date = d.Date;
+```
 
-##how-to-run
+## How to Run
 
 ### Prerequisites
 - MySQL Server or any SQL-compatible RDBMS.
