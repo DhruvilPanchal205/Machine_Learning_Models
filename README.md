@@ -42,6 +42,8 @@ The data model is structured using a **Star Schema** with a central fact table (
     - Stores enrollment date details.
     - **Columns**: `Date_ID`, `Date`, `Term`, `Year`
 
+(https://github.com/DhruvilPanchal205/Data-Models-and-ETL-using-SQL/blob/main/University_data%20Schema.png)
+
 ### SQL to Create Data Model:
 
 ```sql
