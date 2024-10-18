@@ -94,11 +94,11 @@ CREATE TABLE Fact_Enrollment (
     FOREIGN KEY (Date_ID) REFERENCES Dim_Date(Date_ID)
 );
 
-## etl-pipeline
+## ETL Pipeline
 
 The ETL process is divided into three phases: **Extract**, **Transform**, and **Load**. In this project, data is extracted into staging tables, transformed to match the dimension and fact tables, and then loaded into the final schema.
 
-###extract
+### Extract
 
 Extract data from external sources (e.g., CSV files, APIs, or databases) into staging tables.
 
