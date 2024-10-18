@@ -116,7 +116,7 @@ LINES TERMINATED BY '\n'
 
 Transform the raw data into a format that matches the structure of the dimension tables.
 
---SQL CODE
+```sql
 -- Transform and load data into Dim_Student table
 INSERT INTO Dim_Student (Student_ID, Student_Name, Major, Enrollment_Year)
 SELECT DISTINCT
@@ -167,7 +167,7 @@ FROM stg_enrollment;
 
 Load the transformed data into the Fact_Enrollment table, ensuring that it links with the dimension tables.
 
--- SQL CODE
+```sql
 -- Load transformed data into Fact_Enrollment table
 INSERT INTO Fact_Enrollment (Enrollment_ID, Student_ID, Course_ID, Instructor_ID, Department_ID, Date_ID, Grade)
 SELECT
